@@ -5,6 +5,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import io from 'socket.io-client';
 import Peer from 'peerjs';
 
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+
 const Meeting = () => {
   const { workspaceId, meetingId } = useParams();
   const navigate = useNavigate();
@@ -25,7 +27,7 @@ const Meeting = () => {
       navigate('/login');
       return;
     }
-    fetch(`http://localhost:5000/api/workspaces?userId=${userId}`)
+    fetch(`${API_URL}/api/workspaces?userId=${userId}`)
       .then(res => res.json())
       .then(data => setWorkspaces(data))
       .catch(console.error);
@@ -35,7 +37,7 @@ const Meeting = () => {
   useEffect(() => {
     if (!meetingId || !userId) return;
 
-    const socket = io('http://localhost:5000');
+    const socket = io(`${API_URL}`);
     // Using default PeerJS public server for easy testing
     const peer = new Peer(userId);
 

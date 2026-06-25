@@ -3,6 +3,8 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Users, FolderOpen, Activity, Plus, Hash, Video, Settings, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+
 const WorkspaceDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -23,7 +25,7 @@ const WorkspaceDetails = () => {
   }, [id]);
 
   const fetchWorkspace = () => {
-    fetch(`http://localhost:5000/api/workspaces/${id}`)
+    fetch(`${API_URL}/api/workspaces/${id}`)
       .then(res => res.json())
       .then(data => {
         setWorkspace(data);
@@ -39,7 +41,7 @@ const WorkspaceDetails = () => {
     e.preventDefault();
     if (!newChannelName) return;
     try {
-      const res = await fetch(`http://localhost:5000/api/workspaces/${id}/channels`, {
+      const res = await fetch(`${API_URL}/api/workspaces/${id}/channels`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name: newChannelName })
@@ -57,7 +59,7 @@ const WorkspaceDetails = () => {
     e.preventDefault();
     if (!newMeetingName) return;
     try {
-      const res = await fetch(`http://localhost:5000/api/workspaces/${id}/meetings`, {
+      const res = await fetch(`${API_URL}/api/workspaces/${id}/meetings`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name: newMeetingName, isLive, scheduledFor: isLive ? null : scheduledFor })

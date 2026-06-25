@@ -3,6 +3,8 @@ import { Search, Plus, Users, FolderOpen, LogIn, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
 
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+
 const gradientColors = [
   'from-blue-500 to-indigo-500',
   'from-purple-500 to-pink-500',
@@ -31,7 +33,7 @@ const Workspaces = () => {
       return;
     }
 
-    fetch(`http://localhost:5000/api/workspaces?userId=${userId}`)
+    fetch(`${API_URL}/api/workspaces?userId=${userId}`)
       .then(res => res.json())
       .then(data => {
         setWorkspaces(data);
@@ -47,7 +49,7 @@ const Workspaces = () => {
     e.preventDefault();
     if (!newWorkspaceName || !userId) return;
     try {
-      const response = await fetch('http://localhost:5000/api/workspaces', {
+      const response = await fetch(`${API_URL}/api/workspaces`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name: newWorkspaceName, color: newWorkspaceColor, userId })
@@ -68,7 +70,7 @@ const Workspaces = () => {
     const inviteCode = prompt('Enter workspace referral code:');
     if (!inviteCode || !userId) return;
     try {
-      const response = await fetch('http://localhost:5000/api/workspaces/join', {
+      const response = await fetch(`${API_URL}/api/workspaces/join`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ inviteCode, userId })

@@ -3,6 +3,8 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { Send, Hash, Search, Phone, Video, MoreVertical, Plus, Smile, Paperclip, Image as ImageIcon, FolderOpen } from 'lucide-react';
 import { motion } from 'framer-motion';
 
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+
 const Chat = () => {
   const { workspaceId, channelId } = useParams();
   const navigate = useNavigate();
@@ -19,7 +21,7 @@ const Chat = () => {
       navigate('/login');
       return;
     }
-    fetch(`http://localhost:5000/api/workspaces?userId=${userId}`)
+    fetch(`${API_URL}/api/workspaces?userId=${userId}`)
       .then(res => res.json())
       .then(data => setWorkspaces(data))
       .catch(console.error);
@@ -27,7 +29,7 @@ const Chat = () => {
 
   useEffect(() => {
     if (channelId) {
-      fetch(`http://localhost:5000/api/messages/${channelId}`)
+      fetch(`${API_URL}/api/messages/${channelId}`)
         .then(res => res.json())
         .then(data => setMessages(data))
         .catch(console.error);
@@ -45,7 +47,7 @@ const Chat = () => {
     if (!newMessage.trim() || !channelId || !workspaceId) return;
 
     try {
-      const res = await fetch(`http://localhost:5000/api/messages/${channelId}`, {
+      const res = await fetch(`${API_URL}/api/messages/${channelId}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ workspaceId, userId, content: newMessage })
